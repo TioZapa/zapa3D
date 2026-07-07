@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zapa3D | Modelagem e Impressão 3D — Peças de Reposição e Protótipos</title>
+<meta name="description" content="Zapa3D: modelagem em Fusion 360, impressão 3D e fabricação de peças de reposição e protótipos sob medida.">
+<style>
+  :root{
+    --bg:#111214;
+    --bg-alt:#1a1c1f;
+    --card:#202226;
+    --orange:#ff6a00;
+    --orange-dark:#e05a00;
+    --text:#eceef0;
+    --muted:#9aa0a8;
+    --border:#2c2f34;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Segoe UI',Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(17,18,20,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
+  .logo{font-size:22px;font-weight:800;letter-spacing:0.5px;}
+  .logo span{color:var(--orange);}
+  .nav-links{display:flex;gap:28px;list-style:none;}
+  .nav-links a{font-size:14px;font-weight:600;color:var(--muted);transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--orange);color:#111;padding:10px 20px;border-radius:6px;
+    font-weight:700;font-size:14px;transition:background .2s;
+  }
+  .nav-cta:hover{background:var(--orange-dark);}
+  .menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;}
+
+  /* Hero */
+  .hero{
+    padding:90px 0 70px;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(255,106,0,0.12), transparent 45%),
+      linear-gradient(180deg,var(--bg) 0%, var(--bg-alt) 100%);
+    border-bottom:1px solid var(--border);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
+  .eyebrow{
+    display:inline-block;color:var(--orange);font-weight:700;font-size:13px;
+    letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;
+  }
+  h1{font-size:44px;font-weight:800;line-height:1.15;margin-bottom:20px;}
+  h1 span{color:var(--orange);}
+  .hero p{color:var(--muted);font-size:17px;max-width:520px;margin-bottom:32px;}
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;padding:14px 26px;border-radius:6px;font-weight:700;font-size:15px;
+    cursor:pointer;border:none;transition:transform .15s, background .2s;
+  }
+  .btn-primary{background:var(--orange);color:#111;}
+  .btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);}
+  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn-outline:hover{border-color:var(--orange);color:var(--orange);}
+  .hero-visual{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:32px;text-align:center;
+  }
+  .hero-visual .icon-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .icon-box{
+    background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;
+    padding:20px 12px;text-align:center;
+  }
+  .icon-box .emoji{font-size:32px;margin-bottom:8px;}
+  .icon-box .label{font-size:13px;color:var(--muted);font-weight:600;}
+
+  /* Sections */
+  section{padding:80px 0;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 48px;}
+  .section-head .eyebrow{display:block;text-align:center;}
+  .section-head h2{font-size:32px;font-weight:800;margin-bottom:14px;}
+  .section-head p{color:var(--muted);font-size:16px;}
+
+  /* Services */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .service-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:30px 26px;transition:border-color .2s, transform .2s;
+  }
+  .service-card:hover{border-color:var(--orange);transform:translateY(-4px);}
+  .service-card .emoji{font-size:30px;margin-bottom:14px;}
+  .service-card h3{font-size:19px;font-weight:700;margin-bottom:10px;}
+  .service-card p{color:var(--muted);font-size:14.5px;}
+
+  /* How it works */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .step{text-align:center;padding:0 10px;}
+  .step-num{
+    width:44px;height:44px;border-radius:50%;background:var(--orange);color:#111;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;
+    margin:0 auto 16px;
+  }
+  .step h3{font-size:16px;margin-bottom:8px;}
+  .step p{color:var(--muted);font-size:14px;}
+
+  /* Use cases / portfolio */
+  .bg-alt{background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .case-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+  }
+  .case-img{
+    height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;
+    background:linear-gradient(135deg,#26282c,#1a1c1f);
+  }
+  .case-body{padding:20px 22px;}
+  .case-body h3{font-size:16px;margin-bottom:6px;}
+  .case-body p{color:var(--muted);font-size:14px;}
+
+  /* Materials */
+  .materials-list{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .material-chip{
+    background:var(--card);border:1px solid var(--border);border-radius:10px;
+    padding:18px;text-align:center;font-weight:700;font-size:14px;
+  }
+  .material-chip small{display:block;color:var(--muted);font-weight:500;margin-top:6px;font-size:12.5px;}
+
+  /* Why us */
+  .why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .why-item{display:flex;gap:14px;align-items:flex-start;}
+  .why-item .check{color:var(--orange);font-size:20px;font-weight:900;}
+  .why-item h4{font-size:16px;margin-bottom:4px;}
+  .why-item p{color:var(--muted);font-size:14px;}
+
+  /* Quote form */
+  .quote-wrap{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:44px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:40px;
+  }
+  .quote-info h2{font-size:28px;margin-bottom:14px;}
+  .quote-info p{color:var(--muted);font-size:15px;margin-bottom:20px;}
+  .quote-info ul{list-style:none;}
+  .quote-info li{color:var(--muted);font-size:14px;margin-bottom:10px;padding-left:22px;position:relative;}
+  .quote-info li::before{content:"✓";position:absolute;left:0;color:var(--orange);font-weight:800;}
+  form{display:flex;flex-direction:column;gap:16px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  label{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block;}
+  input,select,textarea{
+    width:100%;background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;
+    padding:12px 14px;color:var(--text);font-size:14px;font-family:inherit;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange);}
+  textarea{resize:vertical;min-height:100px;}
+  .file-input{
+    border:1.5px dashed var(--border);border-radius:8px;padding:18px;text-align:center;
+    background:var(--bg-alt);cursor:pointer;font-size:13px;color:var(--muted);
+  }
+  .file-input:hover{border-color:var(--orange);color:var(--text);}
+  .file-input input{display:none;}
+  #file-name{margin-top:6px;font-size:12.5px;color:var(--orange);}
+  .submit-btn{margin-top:6px;}
+  .form-msg{display:none;background:#1c3324;border:1px solid #2e5c3e;color:#7fd99a;padding:12px 16px;border-radius:8px;font-size:14px;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--border);padding:18px 0;cursor:pointer;}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:15.5px;}
+  .faq-q .plus{color:var(--orange);font-size:20px;transition:transform .2s;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;color:var(--muted);font-size:14.5px;}
+  .faq-item.open .faq-a{max-height:200px;padding-top:12px;}
+
+  /* Footer */
+  footer{background:var(--bg-alt);border-top:1px solid var(--border);padding:44px 0 24px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;margin-bottom:32px;}
+  .footer-logo{font-size:20px;font-weight:800;margin-bottom:12px;}
+  .footer-logo span{color:var(--orange);}
+  footer p{color:var(--muted);font-size:14px;}
+  footer h4{font-size:14px;margin-bottom:14px;}
+  footer ul{list-style:none;}
+  footer li{margin-bottom:8px;}
+  footer a{color:var(--muted);font-size:14px;}
+  footer a:hover{color:var(--orange);}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:20px;text-align:center;color:var(--muted);font-size:13px;}
+
+  /* WhatsApp float */
+  .wa-float{
+    position:fixed;bottom:24px;right:24px;background:#25D366;color:#fff;
+    width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:28px;box-shadow:0 6px 18px rgba(0,0,0,0.35);z-index:200;transition:transform .2s;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+
+  @media(max-width:860px){
+    .nav-links, .nav-cta{display:none;}
+    .menu-toggle{display:block;}
+    .nav-links.open{
+      display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;
+      background:var(--bg);border-bottom:1px solid var(--border);padding:20px 24px;gap:18px;
+    }
+    .hero-grid{grid-template-columns:1fr;}
+    h1{font-size:32px;}
+    .services-grid,.cases-grid{grid-template-columns:1fr 1fr;}
+    .steps{grid-template-columns:1fr 1fr;}
+    .materials-list{grid-template-columns:1fr 1fr;}
+    .why-grid{grid-template-columns:1fr;}
+    .quote-wrap{grid-template-columns:1fr;padding:28px;}
+    .form-row{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:520px){
+    .services-grid,.cases-grid,.steps,.materials-list{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#top" class="logo">zapa<span>3D</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#como-funciona">Como Funciona</a></li>
+      <li><a href="#casos">Aplicações</a></li>
+      <li><a href="#materiais">Materiais</a></li>
+      <li><a href="#orcamento">Orçamento</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#orcamento" class="nav-cta">Pedir orçamento</a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Modelagem 3D · Fusion 360 · Impressão 3D</span>
+      <h1>Sua peça quebrou? <span>Nós modelamos e imprimimos</span> a reposição sob medida.</h1>
+      <p>A Zapa3D é especializada em engenharia reversa, modelagem em Fusion 360 e impressão 3D de peças de reposição e protótipos. Aquele componente descontinuado que ninguém mais fabrica? A gente recria e entrega pronto para usar.</p>
+      <div class="btn-row">
+        <a href="#orcamento" class="btn btn-primary">Solicitar orçamento</a>
+        <a href="#servicos" class="btn btn-outline">Ver serviços</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="icon-grid">
+        <div class="icon-box"><div class="emoji">🔧</div><div class="label">Peças de Reposição</div></div>
+        <div class="icon-box"><div class="emoji">🖥️</div><div class="label">Modelagem Fusion 360 e Blender</div></div>
+        <div class="icon-box"><div class="emoji">🖨️</div><div class="label">Impressão 3D</div></div>
+        <div class="icon-box"><div class="emoji">⚙️</div><div class="label">Protótipos Funcionais</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="servicos">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">O que fazemos</span>
+      <h2>Serviços</h2>
+      <p>Do escaneamento/medição da peça original até a entrega da peça impressa, cuidamos de todo o processo.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="emoji">🔩</div>
+        <h3>Peças de reposição</h3>
+        <p>Recriamos componentes quebrados, desgastados ou descontinuados — engrenagens, suportes, encaixes, botões, clipes e muito mais — a partir da peça original ou de medidas.</p>
+      </div>
+      <div class="service-card">
+        <div class="emoji">🖥️</div>
+        <h3>Modelagem em Fusion 360 e Blender</h3>
+        <p>Modelagem paramétrica precisa, engenharia reversa de peças físicas e ajustes de tolerância para garantir encaixe perfeito nos mais milimétricos detalhes.</p>
+      </div>
+      <div class="service-card">
+        <div class="emoji">🖨️</div>
+        <h3>Impressão 3D multi-material</h3>
+        <p>Impressão em PLA, PETG, ABS, TPU flexível e nylon, com acabamento e pós-processamento conforme a aplicação.</p>
+      </div>
+      <div class="service-card">
+        <div class="emoji">🧪</div>
+        <h3>Protótipos e prova de conceito</h3>
+        <p>Do rascunho à peça funcional: prototipagem rápida para testar encaixe, forma e função antes da produção final.</p>
+      </div>
+      <div class="service-card">
+        <div class="emoji">📐</div>
+        <h3>Medição e engenharia reversa</h3>
+        <p>Levantamento de dimensões a partir de fotos, peça física ou desenho técnico para reconstrução fiel em CAD.</p>
+      </div>
+      <div class="service-card">
+        <div class="emoji">🛠️</div>
+        <h3>Pequenos lotes e séries</h3>
+        <p>Produção sob demanda de pequenas quantidades — ideal para reposição em série ou substituição de itens de linha descontinuada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-alt" id="como-funciona">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Processo</span>
+      <h2>Como funciona</h2>
+      <p>Um processo simples, do envio da referência até a peça na sua mão.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Envie a referência</h3>
+        <p>Foto, medidas ou a peça quebrada — pelo formulário ou WhatsApp.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Modelagem</h3>
+        <p>Criamos o modelo 3D em Fusion 360 com as medidas e tolerâncias corretas.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Aprovação e impressão</h3>
+        <p>Você aprova o modelo, escolhe o material e nós imprimimos.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Entrega</h3>
+        <p>Peça pronta, revisada e embalada para retirada ou envio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="casos">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Aplicações</span>
+      <h2>Onde usamos</h2>
+      <p>Peças de reposição e protótipos para os mais diversos contextos.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-img">🏠</div>
+        <div class="case-body">
+          <h3>Eletrodomésticos</h3>
+          <p>Suportes, engates, botões e peças plásticas de eletrodomésticos fora de linha.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-img">🚗</div>
+        <div class="case-body">
+          <h3>Automotivo</h3>
+          <p>Clipes, suportes internos, encaixes e componentes de acabamento.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-img">🏭</div>
+        <div class="case-body">
+          <h3>Indústria e máquinas</h3>
+          <p>Engrenagens, buchas, guias e peças mecânicas de reposição sob medida.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-img">🪑</div>
+        <div class="case-body">
+          <h3>Móveis</h3>
+          <p>Pés, dobradiças, encaixes e ferragens plásticas para móveis.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-img">💡</div>
+        <div class="case-body">
+          <h3>Produtos de consumo</h3>
+          <p>Peças de eletrônicos, brinquedos, utilidades domésticas e acessórios.</p>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-img">🧩</div>
+        <div class="case-body">
+          <h3>Protótipos de produto</h3>
+          <p>Validação de ideias e projetos antes de partir para fabricação em escala.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-alt" id="materiais">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Materiais</span>
+      <h2>Materiais disponíveis</h2>
+      <p>Escolhemos o material certo para a resistência e uso da sua peça.</p>
+    </div>
+    <div class="materials-list">
+      <div class="material-chip">PLA<small>Uso geral, baixo custo</small></div>
+      <div class="material-chip">PETG<small>Resistente e durável</small></div>
+      <div class="material-chip">ABS<small>Resistência térmica</small></div>
+      <div class="material-chip">TPU<small>Flexível e elástico</small></div>
+      <div class="material-chip">Nylon<small>Alta resistência mecânica</small></div>
+      <div class="material-chip">Fibra de Carbono<small>Rigidez estrutural</small></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Diferenciais</span>
+      <h2>Por que a Zapa3D</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item"><span class="check">✓</span><div><h4>Foco em reposição</h4><p>Especialistas em recriar peças difíceis de encontrar no mercado.</p></div></div>
+      <div class="why-item"><span class="check">✓</span><div><h4>Precisão em Fusion 360</h4><p>Modelagem paramétrica com controle de tolerância para encaixe correto.</p></div></div>
+      <div class="why-item"><span class="check">✓</span><div><h4>Múltiplos materiais</h4><p>Selecionamos o material ideal conforme uso e resistência necessária.</p></div></div>
+      <div class="why-item"><span class="check">✓</span><div><h4>Orçamento rápido</h4><p>Envie foto ou medidas e receba retorno em pouco tempo.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-alt" id="orcamento">
+  <div class="container">
+    <div class="quote-wrap">
+      <div class="quote-info">
+        <h2>Peça seu orçamento</h2>
+        <p>Conte o que você precisa e, se puder, anexe uma foto da peça quebrada ou um arquivo de referência (STL, foto, PDF).</p>
+        <ul>
+          <li>Resposta rápida com estimativa de prazo e valor</li>
+          <li>Atendimento para pessoas físicas e empresas</li>
+          <li>Sem compromisso no orçamento</li>
+        </ul>
+      </div>
+      <form id="quoteForm">
+        <div class="form-row">
+          <div>
+            <label for="name">Nome</label>
+            <input type="text" id="name" required placeholder="Seu nome">
+          </div>
+          <div>
+            <label for="phone">WhatsApp / Telefone</label>
+            <input type="tel" id="phone" required placeholder="(63) 98146-3124">
+          </div>
+        </div>
+        <div>
+          <label for="email">E-mail</label>
+          <input type="email" id="email" required placeholder="zapai3d@gmail.com">
+        </div>
+        <div>
+          <label for="type">Tipo de serviço</label>
+          <select id="type">
+            <option>Peça de reposição</option>
+            <option>Modelagem em Fusion 360</option>
+            <option>Protótipo</option>
+            <option>Pequeno lote / série</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div>
+          <label for="desc">Descreva a peça / necessidade</label>
+          <textarea id="desc" required placeholder="Ex: preciso reproduzir um suporte plástico de liquidificador, quebrado ao meio..."></textarea>
+        </div>
+        <div>
+          <label>Anexar foto ou arquivo (opcional)</label>
+          <label class="file-input">
+            📎 Clique para anexar (foto, STL, PDF)
+            <input type="file" id="fileUpload">
+          </label>
+          <div id="file-name"></div>
+        </div>
+        <button type="submit" class="btn btn-primary submit-btn">Enviar pedido de orçamento</button>
+        <div class="form-msg" id="formMsg">✓ Recebemos seu pedido! Entraremos em contato em breve.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container" style="max-width:760px;">
+    <div class="section-head">
+      <span class="eyebrow">Dúvidas</span>
+      <h2>Perguntas frequentes</h2>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Não tenho o modelo 3D da peça, vocês conseguem criar do zero?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Sim. A partir de fotos, medidas ou da peça física (engenharia reversa), modelamos em Fusion 360 até chegar ao encaixe correto.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Qual material escolher para minha peça?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Depende do uso: PETG e Nylon para resistência mecânica, ABS para calor, TPU para flexibilidade. Ajudamos a definir no orçamento.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Qual o prazo médio de entrega?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Varia conforme complexidade da modelagem e tempo de impressão. Informamos o prazo estimado junto com o orçamento.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Fazem peças em pequenos lotes?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Sim, produzimos desde unidades avulsas até pequenas séries sob demanda.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">zapa<span>3D</span></div>
+        <p>Modelagem em Fusion 360 e impressão 3D focadas em peças de reposição e protótipos sob medida.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#casos">Aplicações</a></li>
+          <li><a href="#materiais">Materiais</a></li>
+          <li><a href="#orcamento">Orçamento</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="#orcamento">Formulário de orçamento</a></li>
+          <li><a href="mailto:zapai3d@gmail.com">zapai3d@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Zapa3D. Todos os direitos reservados.</div>
+  </div>
+</footer>
+
+<a href="https://wa.me/5563981463124" class="wa-float" target="_blank" rel="noopener" title="Fale no WhatsApp">💬</a>
+
+<script>
+  // mobile menu
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // file input name display
+  const fileInput = document.getElementById('fileUpload');
+  const fileName = document.getElementById('file-name');
+  fileInput.addEventListener('change', () => {
+    fileName.textContent = fileInput.files.length ? '📄 ' + fileInput.files[0].name : '';
+  });
+
+  // form submit (demo only, no backend)
+  const form = document.getElementById('quoteForm');
+  const formMsg = document.getElementById('formMsg');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    formMsg.style.display = 'block';
+    form.reset();
+    fileName.textContent = '';
+    setTimeout(() => formMsg.style.display = 'none', 6000);
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
